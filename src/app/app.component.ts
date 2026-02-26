@@ -1,6 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TranslationService } from './core/services';
 import { LoadingSpinnerComponent } from './shared/components';
 
 @Component({
@@ -10,6 +9,6 @@ import { LoadingSpinnerComponent } from './shared/components';
   styleUrl: './app.component.scss',
   standalone: true,
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'student-system';
 }

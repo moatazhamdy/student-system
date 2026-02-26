@@ -1,7 +1,7 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors, HttpClient } from '@angular/common/http';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { importProvidersFrom } from '@angular/core';
@@ -32,7 +32,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor, loadingInterceptor, errorInterceptor])),
-    provideAnimations(),
+    provideAnimationsAsync(),
     providePrimeNG({
       theme: {
         preset: CustomPreset,
