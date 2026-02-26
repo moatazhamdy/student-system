@@ -1,138 +1,108 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, of, delay } from 'rxjs';
-import { map, take, filter, tap } from 'rxjs/operators';
-import { DatabaseService } from '@core/services';
-import {
-  ApiResponse,
-  PaginatedApiResponse,
-  PaginationParams,
-} from '@core/models';
-import {
-  Student,
-  CreateStudentDto,
-  UpdateStudentDto,
-  StudentStatus,
-} from '../models/student.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Student, StudentStatus, CreateStudentDto, UpdateStudentDto } from '../models/student.model';
+
+interface ApiStudent {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  status: string;
+  createdAt: string;
+  courseIds: number[];
+}
+
+interface ApiResponse {
+  students: ApiStudent[];
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class StudentsApiService {
-  private db = inject(DatabaseService);
+  private http = inject(HttpClient);
+  private readonly API_URL = 'http://localhost:3001/api/students';
 
   /**
-   * Map database student to Student model
+   * Map API student to Student model
    */
-  private mapToStudent(dbStudent: any): Student {
-    const nameParts = (dbStudent.name || '').split(' ');
-    const firstName = nameParts[0] || '';
-    const lastName = nameParts.slice(1).join(' ') || '';
-
+  private mapToStudent(apiStudent: ApiStudent): Student {
+    const [firstName, ...lastNameParts] = apiStudent.name.split(' ');
     return {
-      id: dbStudent.id.toString(),
-      firstName,
-      lastName,
-      email: dbStudent.email || '',
-      phone: dbStudent.phone || '',
-      dateOfBirth: new Date(), // Not in database
-      enrollmentDate: new Date(dbStudent.createdAt || new Date()),
-      status:
-        dbStudent.status === 'active'
-          ? StudentStatus.Active
-          : StudentStatus.Inactive,
-      courses: (dbStudent.courseIds || []).map((id: number) => id.toString()),
+      id: apiStudent.id.toString(),
+      firstName: firstName || '',
+      lastName: lastNameParts.join(' ') || '',
+      email: apiStudent.email,
+      phone: apiStudent.phone,
+      dateOfBirth: new Date('2000-01-01'),
+      enrollmentDate: new Date(apiStudent.createdAt),
+      status: apiStudent.status === 'active' ? StudentStatus.Active : StudentStatus.Inactive,
+      courses: apiStudent.courseIds.map(id => id.toString()),
     };
   }
 
   /**
-   * Map Student model to database format
+   * Get all students
    */
-  private mapToDbFormat(
-    student: Partial<Student> & { firstName?: string; lastName?: string },
-  ): any {
-    return {
-      name: `${student.firstName || ''} ${student.lastName || ''}`.trim(),
-      email: student.email,
-      phone: student.phone,
-      status: student.status === StudentStatus.Active ? 'active' : 'inactive',
-      createdAt: student.enrollmentDate
-        ? new Date(student.enrollmentDate).toISOString().split('T')[0]
-        : new Date().toISOString().split('T')[0],
-      courseIds: (student.courses || []).map((id) => parseInt(id, 10)),
+  getAll(): Observable<Student[]> {
+    return this.http.get<ApiResponse | ApiStudent[]>(this.API_URL).pipe(
+      map(response => {
+        // Handle both response formats: { students: [] } or direct array []
+        const students = Array.isArray(response) ? response : (response?.students || []);
+        return students.map(s => this.mapToStudent(s));
+      })
+    );
+  }
+
+  /**
+   * Get student by ID
+   */
+  getById(id: string): Observable<Student> {
+    return this.http.get<ApiStudent>(`${this.API_URL}/${id}`).pipe(
+      map(s => this.mapToStudent(s))
+    );
+  }
+
+  /**
+   * Create student
+   */
+  create(data: CreateStudentDto): Observable<Student> {
+    const apiData = {
+      name: `${data.firstName} ${data.lastName}`,
+      email: data.email,
+      phone: data.phone,
+      status: data.status === StudentStatus.Active ? 'active' : 'inactive',
+      createdAt: new Date().toISOString().split('T')[0],
+      courseIds: data.courses.map(id => parseInt(id, 10)),
     };
-  }
 
-  getAll(
-    params?: PaginationParams,
-  ): Observable<PaginatedApiResponse<Student[]>> {
-    return this.db.getStudents().pipe(
-      take(1),
-      map((students: any[]) => {
-        const mappedStudents = students.map((s: any) => this.mapToStudent(s));
-        return {
-          success: true,
-          data: mappedStudents,
-          pagination: {
-            currentPage: params?.page || 1,
-            pageSize: params?.pageSize || 10,
-            totalPages: 1,
-            totalItems: mappedStudents.length,
-            hasNext: false,
-            hasPrevious: false,
-          },
-        };
-      }),
-      delay(300),
+    return this.http.post<ApiStudent>(this.API_URL, apiData).pipe(
+      map(s => this.mapToStudent(s))
     );
   }
 
-  getById(id: string): Observable<ApiResponse<Student>> {
-    return this.db.getStudentById(parseInt(id, 10)).pipe(
-      take(1),
-      map((student) => ({
-        success: true,
-        data: student ? this.mapToStudent(student) : null!,
-      })),
-      delay(200),
+  /**
+   * Update student
+   */
+  update(id: string, data: UpdateStudentDto): Observable<Student> {
+    const apiData = {
+      name: `${data.firstName} ${data.lastName}`,
+      email: data.email,
+      phone: data.phone,
+      status: data.status === StudentStatus.Active ? 'active' : 'inactive',
+    };
+
+    return this.http.put<ApiStudent>(`${this.API_URL}/${id}`, apiData).pipe(
+      map(s => this.mapToStudent(s))
     );
   }
 
-  create(data: CreateStudentDto): Observable<ApiResponse<Student>> {
-    const dbData = this.mapToDbFormat(data);
-
-    return this.db.addStudent(dbData).pipe(
-      map((student) => ({
-        success: true,
-        data: this.mapToStudent(student),
-        message: 'Student created successfully',
-      })),
-      delay(300),
-    );
-  }
-
-  update(id: string, data: UpdateStudentDto): Observable<ApiResponse<Student>> {
-    const dbData = this.mapToDbFormat(data);
-
-    return this.db.updateStudent(parseInt(id, 10), dbData).pipe(
-      map((student) => ({
-        success: true,
-        data: student ? this.mapToStudent(student) : null!,
-        message: 'Student updated successfully',
-      })),
-      delay(300),
-    );
-  }
-
-  delete(id: string): Observable<ApiResponse<void>> {
-    return this.db.deleteStudent(parseInt(id, 10)).pipe(
-      map((success) => ({
-        success,
-        data: undefined,
-        message: success
-          ? 'Student deleted successfully'
-          : 'Failed to delete student',
-      })),
-      delay(300),
-    );
+  /**
+   * Delete student
+   */
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/${id}`);
   }
 }
