@@ -40,15 +40,15 @@ import {
   ConfirmationDialogComponent,
 } from '@shared/components';
 import { CoursesStore } from '../../store/courses.store.clean';
-import { InstructorsStore } from '../../../instructors/store/instructors.store.clean';
-import { StudentsStore } from '../../../students/store/students.store.clean';
+import { InstructorsStore } from '../../../instructors/store/instructors.store';
+import { StudentsStore } from '../../../students/store/students.store';
 import {
   Course,
   CourseStatus,
   CreateCourseDto,
   UpdateCourseDto,
 } from '../../models/course.model';
-import { CoursesApiService } from '../../services/courses-api.service.simple';
+import { CoursesApiService } from '../../services/courses-api.service';
 
 @Component({
   selector: 'app-course-list',
@@ -141,10 +141,22 @@ export class CourseListComponent implements OnInit, OnDestroy {
     this.translate.use(lang);
 
     return [
-      { label: this.translate.instant('statuses.active'), value: CourseStatus.Active },
-      { label: this.translate.instant('statuses.inactive'), value: CourseStatus.Inactive },
-      { label: this.translate.instant('statuses.completed'), value: CourseStatus.Completed },
-      { label: this.translate.instant('statuses.cancelled'), value: CourseStatus.Cancelled },
+      {
+        label: this.translate.instant('statuses.active'),
+        value: CourseStatus.Active,
+      },
+      {
+        label: this.translate.instant('statuses.inactive'),
+        value: CourseStatus.Inactive,
+      },
+      {
+        label: this.translate.instant('statuses.completed'),
+        value: CourseStatus.Completed,
+      },
+      {
+        label: this.translate.instant('statuses.cancelled'),
+        value: CourseStatus.Cancelled,
+      },
     ];
   });
 
@@ -154,20 +166,50 @@ export class CourseListComponent implements OnInit, OnDestroy {
     this.translate.use(lang);
 
     return [
-      { label: this.translate.instant('subjects.mathematics'), value: 'Mathematics' },
+      {
+        label: this.translate.instant('subjects.mathematics'),
+        value: 'Mathematics',
+      },
       { label: this.translate.instant('subjects.physics'), value: 'Physics' },
-      { label: this.translate.instant('subjects.chemistry'), value: 'Chemistry' },
+      {
+        label: this.translate.instant('subjects.chemistry'),
+        value: 'Chemistry',
+      },
       { label: this.translate.instant('subjects.biology'), value: 'Biology' },
-      { label: this.translate.instant('subjects.computerScience'), value: 'Computer Science' },
-      { label: this.translate.instant('subjects.englishLiterature'), value: 'English Literature' },
+      {
+        label: this.translate.instant('subjects.computerScience'),
+        value: 'Computer Science',
+      },
+      {
+        label: this.translate.instant('subjects.englishLiterature'),
+        value: 'English Literature',
+      },
       { label: this.translate.instant('subjects.history'), value: 'History' },
-      { label: this.translate.instant('subjects.geography'), value: 'Geography' },
-      { label: this.translate.instant('subjects.economics'), value: 'Economics' },
-      { label: this.translate.instant('subjects.businessStudies'), value: 'Business Studies' },
-      { label: this.translate.instant('subjects.artDesign'), value: 'Art & Design' },
+      {
+        label: this.translate.instant('subjects.geography'),
+        value: 'Geography',
+      },
+      {
+        label: this.translate.instant('subjects.economics'),
+        value: 'Economics',
+      },
+      {
+        label: this.translate.instant('subjects.businessStudies'),
+        value: 'Business Studies',
+      },
+      {
+        label: this.translate.instant('subjects.artDesign'),
+        value: 'Art & Design',
+      },
       { label: this.translate.instant('subjects.music'), value: 'Music' },
-      { label: this.translate.instant('subjects.physicalEducation'), value: 'Physical Education' },
-      { label: this.translate.instant('subjects.foreignLanguages'), value: 'Foreign Languages' },
+      {
+        label: this.translate.instant('subjects.physicalEducation'),
+        value: 'Physical Education',
+      },
+      {
+        label: this.translate.instant('subjects.foreignLanguages'),
+        value: 'Foreign Languages',
+      },
     ];
   });
 
@@ -211,7 +253,6 @@ export class CourseListComponent implements OnInit, OnDestroy {
       scheduleDate: ['', Validators.required],
     });
   }
-
 
   onSearch(event: Event): void {
     const value = (event.target as HTMLInputElement).value;

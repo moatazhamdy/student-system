@@ -10,9 +10,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CardModule } from 'primeng/card';
 import { PageHeaderComponent, LineChartComponent } from '@shared/components';
 import { LineChartData } from '@shared/components';
-import { StudentsStore } from '../../../students/store/students.store.clean';
+import { StudentsStore } from '../../../students/store/students.store';
 import { CoursesStore } from '../../../courses/store/courses.store.clean';
-import { InstructorsStore } from '../../../instructors/store/instructors.store.clean';
+import { InstructorsStore } from '../../../instructors/store/instructors.store';
 import { DatabaseStore } from '@core';
 
 @Component({

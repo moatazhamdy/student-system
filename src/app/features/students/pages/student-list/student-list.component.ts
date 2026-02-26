@@ -34,7 +34,7 @@ import {
   EmptyStateComponent,
   ConfirmationDialogComponent,
 } from '@shared/components';
-import { StudentsStore } from '../../store/students.store.clean';
+import { StudentsStore } from '../../store/students.store';
 import {
   Student,
   StudentStatus,
@@ -93,10 +93,10 @@ export class StudentListComponent implements OnInit {
     if (!search) return allStudents;
 
     return allStudents.filter(
-      s =>
+      (s) =>
         s.firstName.toLowerCase().includes(search) ||
         s.lastName.toLowerCase().includes(search) ||
-        s.email.toLowerCase().includes(search)
+        s.email.toLowerCase().includes(search),
     );
   });
 
@@ -110,10 +110,22 @@ export class StudentListComponent implements OnInit {
     this.translate.use(lang);
 
     return [
-      { label: this.translate.instant('statuses.active'), value: StudentStatus.Active },
-      { label: this.translate.instant('statuses.inactive'), value: StudentStatus.Inactive },
-      { label: this.translate.instant('statuses.graduated'), value: StudentStatus.Graduated },
-      { label: this.translate.instant('statuses.suspended'), value: StudentStatus.Suspended },
+      {
+        label: this.translate.instant('statuses.active'),
+        value: StudentStatus.Active,
+      },
+      {
+        label: this.translate.instant('statuses.inactive'),
+        value: StudentStatus.Inactive,
+      },
+      {
+        label: this.translate.instant('statuses.graduated'),
+        value: StudentStatus.Graduated,
+      },
+      {
+        label: this.translate.instant('statuses.suspended'),
+        value: StudentStatus.Suspended,
+      },
     ];
   });
 
@@ -135,7 +147,6 @@ export class StudentListComponent implements OnInit {
       status: [null, Validators.required],
     });
   }
-
 
   onSearch(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
@@ -188,7 +199,7 @@ export class StudentListComponent implements OnInit {
     this.studentForm.reset();
 
     // Save to backend - store updates automatically
-    this.store.create(studentData).catch(error => {
+    this.store.create(studentData).catch((error) => {
       // Error handled by store
     });
   }
@@ -218,7 +229,7 @@ export class StudentListComponent implements OnInit {
     this.selectedStudent.set(null);
 
     // Update backend - store updates automatically
-    this.store.update(student.id, updateData).catch(error => {
+    this.store.update(student.id, updateData).catch((error) => {
       // Error handled by store
     });
   }
@@ -247,7 +258,7 @@ export class StudentListComponent implements OnInit {
 
     // Delete from backend - store updates automatically
     if (student) {
-      this.store.deleteStudent(student.id).catch(error => {
+      this.store.deleteStudent(student.id).catch((error) => {
         // Error handled by store
       });
     }

@@ -37,7 +37,7 @@ import {
   EmptyStateComponent,
   ConfirmationDialogComponent,
 } from '@shared/components';
-import { InstructorsStore } from '../../store/instructors.store.clean';
+import { InstructorsStore } from '../../store/instructors.store';
 import {
   Instructor,
   CreateInstructorDto,
@@ -181,7 +181,6 @@ export class InstructorListComponent implements OnInit {
       hireDate: [null, Validators.required],
     });
   }
-
 
   onSearch(event: Event): void {
     const value = (event.target as HTMLInputElement).value;

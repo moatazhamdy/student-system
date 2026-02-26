@@ -16,17 +16,20 @@ import {
 } from '@ngrx/signals/entities';
 import { computed } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { Course } from '../models/course.model';
-import { CoursesApiService } from '../services/courses-api.service';
+import { Student } from '../models/student.model';
+import { StudentsApiService } from '../services/students-api.service';
 
 /**
- * Simple NgRx Signal Store for Courses
+ * Simple NgRx Signal Store for Students
+ * - Direct API calls
+ * - Clean entity management
+ * - No complexity
  */
-export const CoursesStore = signalStore(
+export const StudentsStore = signalStore(
   { providedIn: 'root' },
 
   // Entity collection
-  withEntities<Course>(),
+  withEntities<Student>(),
 
   // Additional state
   withState({
@@ -36,14 +39,14 @@ export const CoursesStore = signalStore(
 
   // Computed values
   withComputed((store) => ({
-    courses: computed(() => store.entities()),
-    courseCount: computed(() => store.entities().length),
+    students: computed(() => store.entities()),
+    studentCount: computed(() => store.entities().length),
   })),
 
   // Methods
-  withMethods((store, api = inject(CoursesApiService)) => ({
+  withMethods((store, api = inject(StudentsApiService)) => ({
     /**
-     * Load all courses - only if store is empty
+     * Load all students - only if store is empty
      */
     async loadAll() {
       // Skip if already loaded
@@ -54,21 +57,21 @@ export const CoursesStore = signalStore(
       patchState(store, { isLoading: true, error: null });
 
       try {
-        const courses = await firstValueFrom(api.getAll());
-        patchState(store, setAllEntities(courses), { isLoading: false });
+        const students = await firstValueFrom(api.getAll());
+        patchState(store, setAllEntities(students), { isLoading: false });
       } catch (error: any) {
         patchState(store, { error: error.message, isLoading: false });
       }
     },
 
     /**
-     * Create course
+     * Create student
      */
     async create(data: any) {
       try {
-        const course = await firstValueFrom(api.create(data));
-        patchState(store, addEntity(course));
-        return course;
+        const student = await firstValueFrom(api.create(data));
+        patchState(store, addEntity(student));
+        return student;
       } catch (error: any) {
         patchState(store, { error: error.message });
         throw error;
@@ -76,13 +79,13 @@ export const CoursesStore = signalStore(
     },
 
     /**
-     * Update course
+     * Update student
      */
     async update(id: string, data: any) {
       try {
-        const course = await firstValueFrom(api.update(id, data));
-        patchState(store, updateEntity({ id, changes: course }));
-        return course;
+        const student = await firstValueFrom(api.update(id, data));
+        patchState(store, updateEntity({ id, changes: student }));
+        return student;
       } catch (error: any) {
         patchState(store, { error: error.message });
         throw error;
@@ -90,9 +93,9 @@ export const CoursesStore = signalStore(
     },
 
     /**
-     * Delete course
+     * Delete student
      */
-    async deleteCourse(id: string) {
+    async deleteStudent(id: string) {
       try {
         await firstValueFrom(api.delete(id));
         patchState(store, removeEntity(id));

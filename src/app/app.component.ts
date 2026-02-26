@@ -11,11 +11,5 @@ import { LoadingSpinnerComponent } from './shared/components';
   standalone: true,
 })
 export class AppComponent implements OnInit {
-  private translationService = inject(TranslationService);
   title = 'student-system';
-
-  ngOnInit(): void {
-    // Translation service is already initialized in its constructor
-    // This ensures the correct language and direction are set on app load
-  }
 }
