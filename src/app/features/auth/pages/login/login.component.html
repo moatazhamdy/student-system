@@ -1,0 +1,97 @@
+<div class="login-container">
+  <div class="login-card-wrapper">
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="login-header">
+          <i class="pi pi-user-circle"></i>
+          <h2>{{ "auth.login" | translate }}</h2>
+          <p class="subtitle">{{ "auth.loginSubtitle" | translate }}</p>
+        </div>
+      </ng-template>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <!-- Username Field -->
+        <div class="field">
+          <p-floatlabel>
+            <input
+              pInputText
+              id="username"
+              formControlName="username"
+              [class.ng-invalid]="
+                loginForm.get('username')?.invalid &&
+                loginForm.get('username')?.touched
+              "
+              autocomplete="username"
+            />
+            <label for="username">{{ "auth.username" | translate }}</label>
+          </p-floatlabel>
+          @if (usernameError) {
+            <small class="error-message">{{ usernameError }}</small>
+          }
+        </div>
+
+        <!-- Password Field -->
+        <div class="field">
+          <p-floatlabel>
+            <p-password
+              id="password"
+              formControlName="password"
+              [toggleMask]="true"
+              [feedback]="false"
+              styleClass="w-full"
+              [inputStyleClass]="
+                loginForm.get('password')?.invalid &&
+                loginForm.get('password')?.touched
+                  ? 'ng-invalid'
+                  : ''
+              "
+              autocomplete="current-password"
+            />
+            <label for="password">{{ "auth.password" | translate }}</label>
+          </p-floatlabel>
+          @if (passwordError) {
+            <small class="error-message">{{ passwordError }}</small>
+          }
+        </div>
+
+        <!-- Error Message -->
+        @if (authStore.error()) {
+          <p-message
+            severity="error"
+            [text]="authStore.error()!"
+            styleClass="w-full"
+          />
+        }
+
+        <!-- Submit Button -->
+        <p-button
+          type="submit"
+          [label]="'auth.login' | translate"
+          icon="pi pi-sign-in"
+          styleClass="w-full"
+          [loading]="isSubmitting() || authStore.isLoading()"
+          [disabled]="loginForm.invalid"
+        />
+      </form>
+
+      <ng-template pTemplate="footer">
+        <div class="login-footer">
+          <p class="demo-credentials-title">{{ "auth.demo" | translate }}</p>
+          <div class="demo-credentials">
+            <div>
+              <strong>Admin user</strong>
+              <p><code>username: admin</code></p>
+              <p><code> password:admin</code></p>
+            </div>
+            <div>
+              <strong>Supervisor user</strong>
+              <p><code>username: supervisor</code></p>
+
+              <p><code>password: supervisor</code></p>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</div>

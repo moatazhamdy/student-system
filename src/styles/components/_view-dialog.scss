@@ -1,0 +1,188 @@
+// View Dialog Styles
+.view-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0.5rem;
+}
+
+// Standard field with label and value
+.view-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.view-label {
+  font-weight: 500;
+  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 150px;
+  padding-top: 0.25rem;
+}
+
+.view-value {
+  font-size: 1rem;
+  color: var(--text-color);
+  font-weight: 700;
+  flex: 1;
+  line-height: 1.6;
+}
+
+// Highlighted field (with background)
+.view-field-highlight {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--surface-50);
+  border-radius: 0.5rem;
+  border-left: 3px solid var(--primary-color);
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .view-label {
+    margin: 0;
+  }
+
+  .view-value {
+    text-align: right;
+
+    @media (max-width: 767px) {
+      text-align: left;
+    }
+  }
+}
+
+// Card-style field
+.view-card {
+  padding: 1.25rem;
+  background: linear-gradient(
+    135deg,
+    var(--surface-50) 0%,
+    var(--surface-100) 100%
+  );
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  .view-label {
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .view-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+}
+
+// Section divider
+.view-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--surface-200);
+
+  &:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+}
+
+.view-section-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  &::before {
+    content: "";
+    width: 4px;
+    height: 1.5rem;
+    background: var(--primary-color);
+    border-radius: 2px;
+  }
+}
+
+// Chips container
+.view-chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--surface-50);
+  border-radius: 0.5rem;
+  min-height: 3rem;
+  align-items: center;
+}
+
+// Tag container
+.view-tag-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+// Progress container
+.view-progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--surface-50);
+  border-radius: 0.5rem;
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-color-secondary);
+  }
+
+  .progress-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+  }
+}
+
+// Grid layout for multiple fields
+.view-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.view-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

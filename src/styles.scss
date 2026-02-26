@@ -1,1 +1,188 @@
 /* You can add global styles to this file, and also import other style files */
+
+// Import PrimeNG base styles
+@import "primeicons/primeicons.css";
+@import "primeflex/primeflex.css";
+
+// Import custom variables and mixins
+@import "./styles/variables";
+@import "./styles/mixins";
+
+// Import PrimeNG theme customizations
+@import "./styles/themes/primeng-theme";
+
+// Import component styles
+@import "./styles/components/view-dialog";
+@import "./styles/components/form-dialog";
+
+// Import RTL styles
+@import "./styles/rtl";
+
+// Google Fonts
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700&display=swap");
+
+// Global Reset and Base Styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: $font-family;
+  font-size: $font-size-base;
+  color: $text-color;
+  background-color: $background-color;
+  line-height: 1.6;
+}
+
+// Scrollbar styling
+body {
+  @include custom-scrollbar();
+}
+
+// Utility Classes
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mt-1 {
+  margin-top: $spacing-sm;
+}
+.mt-2 {
+  margin-top: $spacing-md;
+}
+.mt-3 {
+  margin-top: $spacing-lg;
+}
+.mt-4 {
+  margin-top: $spacing-xl;
+}
+
+.mb-1 {
+  margin-bottom: $spacing-sm;
+}
+.mb-2 {
+  margin-bottom: $spacing-md;
+}
+.mb-3 {
+  margin-bottom: $spacing-lg;
+}
+.mb-4 {
+  margin-bottom: $spacing-xl;
+}
+
+.ml-1 {
+  margin-left: $spacing-sm;
+}
+.ml-2 {
+  margin-left: $spacing-md;
+}
+.ml-3 {
+  margin-left: $spacing-lg;
+}
+
+.mr-1 {
+  margin-right: $spacing-sm;
+}
+.mr-2 {
+  margin-right: $spacing-md;
+}
+.mr-3 {
+  margin-right: $spacing-lg;
+}
+
+.p-1 {
+  padding: $spacing-sm;
+}
+.p-2 {
+  padding: $spacing-md;
+}
+.p-3 {
+  padding: $spacing-lg;
+}
+.p-4 {
+  padding: $spacing-xl;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  @include flex-column();
+}
+
+.flex-center {
+  @include flex-center();
+}
+
+.flex-between {
+  @include flex-between();
+}
+
+.flex-start {
+  @include flex-start();
+}
+
+.gap-1 {
+  gap: $spacing-sm;
+}
+.gap-2 {
+  gap: $spacing-md;
+}
+.gap-3 {
+  gap: $spacing-lg;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.card {
+  @include card();
+}
+
+// Loading Overlay
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  @include flex-center();
+  z-index: 9999;
+
+  .spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid $primary-color;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

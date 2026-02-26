@@ -1,0 +1,139 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "Ahmed Ali",
+      "email": "ahmed.ali@mail.com",
+      "phone": "01000000001",
+      "status": "active",
+      "createdAt": "2026-02-01",
+      "courseIds": [1, 2]
+    },
+    {
+      "id": 2,
+      "name": "Sara Mohamed",
+      "email": "sara@mail.com",
+      "phone": "01000000002",
+      "status": "inactive",
+      "createdAt": "2026-02-10",
+      "courseIds": [2]
+    },
+    {
+      "id": 3,
+      "name": "Omar Khaled",
+      "email": "omar.k@mail.com",
+      "phone": "01000000003",
+      "status": "active",
+      "createdAt": "2026-01-15",
+      "courseIds": [1]
+    },
+    {
+      "id": 4,
+      "name": "Mona Adel",
+      "email": "mona.adel@mail.com",
+      "phone": "01000000004",
+      "status": "active",
+      "createdAt": "2026-02-05",
+      "courseIds": [2]
+    },
+    {
+      "id": 5,
+      "name": "Youssef Tarek",
+      "email": "youssef.t@mail.com",
+      "phone": "01000000005",
+      "status": "inactive",
+      "createdAt": "2026-01-20",
+      "courseIds": []
+    },
+    {
+      "id": 6,
+      "name": "Nourhan Samy",
+      "email": "nourhan.s@mail.com",
+      "phone": "01000000006",
+      "status": "active",
+      "createdAt": "2026-02-12",
+      "courseIds": [1, 2]
+    },
+    {
+      "id": 7,
+      "name": "Karim Hossam",
+      "email": "karim.h@mail.com",
+      "phone": "01000000007",
+      "status": "active",
+      "createdAt": "2026-01-28",
+      "courseIds": [1]
+    },
+    {
+      "id": 8,
+      "name": "Salma Mostafa",
+      "email": "salma.m@mail.com",
+      "phone": "01000000008",
+      "status": "inactive",
+      "createdAt": "2026-02-02",
+      "courseIds": []
+    },
+    {
+      "id": 9,
+      "name": "Hassan Fathy",
+      "email": "hassan.f@mail.com",
+      "phone": "01000000009",
+      "status": "active",
+      "createdAt": "2026-02-14",
+      "courseIds": [2]
+    },
+    {
+      "id": 10,
+      "name": "Aya Mahmoud",
+      "email": "aya.mahmoud@mail.com",
+      "phone": "01000000010",
+      "status": "active",
+      "createdAt": "2026-01-18",
+      "courseIds": [1]
+    },
+    {
+      "id": 11,
+      "name": "Mahmoud Essam",
+      "email": "mahmoud.e@mail.com",
+      "phone": "01000000011",
+      "status": "inactive",
+      "createdAt": "2026-02-03",
+      "courseIds": []
+    },
+    {
+      "id": 12,
+      "name": "Farah Nabil",
+      "email": "farah.n@mail.com",
+      "phone": "01000000012",
+      "status": "active",
+      "createdAt": "2026-02-16",
+      "courseIds": [2]
+    },
+    {
+      "id": 13,
+      "name": "Mostafa Gamal",
+      "email": "mostafa.g@mail.com",
+      "phone": "01000000013",
+      "status": "active",
+      "createdAt": "2026-01-25",
+      "courseIds": [1, 2]
+    },
+    {
+      "id": 14,
+      "name": "Reem Ashraf",
+      "email": "reem.a@mail.com",
+      "phone": "01000000014",
+      "status": "inactive",
+      "createdAt": "2026-02-07",
+      "courseIds": []
+    },
+    {
+      "id": 15,
+      "name": "Khaled Anwar2",
+      "email": "khaled.a@mail.com",
+      "phone": "01000000015",
+      "status": "active",
+      "createdAt": "2026-02-18",
+      "courseIds": [1]
+    }
+  ]
+}

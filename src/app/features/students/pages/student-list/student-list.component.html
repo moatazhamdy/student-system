@@ -1,0 +1,484 @@
+<app-page-header [title]="'students.list'" />
+<div class="card">
+  <div class="table-header">
+    <p-iconfield iconPosition="left">
+      <p-inputicon styleClass="pi pi-search" />
+      <input
+        pInputText
+        type="text"
+        [placeholder]="'common.search' | translate"
+        (input)="onSearch($event)"
+        class="search-input"
+      />
+    </p-iconfield>
+    @if (authStore.canCreate()) {
+      <button
+        pButton
+        type="button"
+        [label]="'students.add' | translate"
+        icon="pi pi-plus"
+        size="small"
+        (click)="onAddStudent()"
+      ></button>
+    }
+  </div>
+
+  @if (filteredStudents().length > 0) {
+    <p-table
+      [value]="filteredStudents()"
+      dataKey="id"
+      [loading]="store.isLoading()"
+      [paginator]="true"
+      [rows]="10"
+      [pageLinks]="5"
+      [showPageLinks]="true"
+      [alwaysShowPaginator]="false"
+      [resetPageOnSort]="false"
+      styleClass="p-datatable-striped"
+      [tableStyle]="{ 'min-width': '60rem', overflow: 'hidden' }"
+      [rowHover]="true"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="lastName">
+            {{ "students.name" | translate }}
+            <p-sortIcon field="lastName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="email">
+            {{ "students.email" | translate }}
+            <p-sortIcon field="email"></p-sortIcon>
+          </th>
+          <th>{{ "students.phone" | translate }}</th>
+          <th pSortableColumn="enrollmentDate">
+            {{ "students.enrollmentDate" | translate }}
+            <p-sortIcon field="enrollmentDate"></p-sortIcon>
+          </th>
+          <th>{{ "students.status" | translate }}</th>
+          <th>{{ "common.actions" | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-student>
+        <tr>
+          <td>
+            <strong>{{ getFullName(student) }}</strong>
+          </td>
+          <td>{{ student.email }}</td>
+          <td>{{ student.phone }}</td>
+          <td>{{ student.enrollmentDate | date: "shortDate" }}</td>
+          <td>
+            <p-tag
+              [value]="student.status"
+              [severity]="getStatusSeverity(student.status)"
+            ></p-tag>
+          </td>
+          <td>
+            <div style="display: flex; gap: 0.5rem; align-items: center">
+              <p-button
+                icon="pi pi-eye"
+                [rounded]="true"
+                [text]="true"
+                (click)="onViewStudent(student)"
+                severity="secondary"
+                size="small"
+                [pTooltip]="'common.view' | translate"
+              />
+              @if (authStore.canEdit()) {
+                <p-button
+                  icon="pi pi-pencil"
+                  [rounded]="true"
+                  [text]="true"
+                  (click)="onEditStudent(student)"
+                  severity="secondary"
+                  size="small"
+                  [pTooltip]="'common.edit' | translate"
+                />
+              }
+              @if (authStore.canDelete()) {
+                <p-button
+                  icon="pi pi-trash"
+                  [rounded]="true"
+                  [text]="true"
+                  (click)="onDeleteStudent(student)"
+                  severity="danger"
+                  size="small"
+                  [pTooltip]="'common.delete' | translate"
+                />
+              }
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  } @else {
+    <app-empty-state [message]="'students.noStudents'">
+      @if (authStore.canCreate()) {
+        <button
+          pButton
+          type="button"
+          [label]="'students.add' | translate"
+          icon="pi pi-plus"
+          class="p-button-primary"
+          (click)="onAddStudent()"
+        ></button>
+      }
+    </app-empty-state>
+  }
+</div>
+
+<app-confirmation-dialog
+  [visible]="showDeleteDialog()"
+  [message]="'students.confirmDelete'"
+  [severity]="'danger'"
+  (confirm)="confirmDelete()"
+  (cancel)="cancelDelete()"
+></app-confirmation-dialog>
+
+<!-- Add Student Dialog -->
+<p-dialog
+  [visible]="showAddDialog()"
+  [modal]="true"
+  [style]="{ width: '50rem' }"
+  [header]="'students.addStudent' | translate"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="true"
+  [closeOnEscape]="true"
+  (visibleChange)="showAddDialog.set($event)"
+>
+  <form [formGroup]="studentForm" (ngSubmit)="$event.preventDefault()">
+    <div class="grid">
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="firstName"
+            type="text"
+            pInputText
+            formControlName="firstName"
+            class="w-full"
+          />
+          <label for="firstName"
+            >{{ "students.firstName" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="lastName"
+            type="text"
+            pInputText
+            formControlName="lastName"
+            class="w-full"
+          />
+          <label for="lastName">{{ "students.lastName" | translate }} *</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="email"
+            type="email"
+            pInputText
+            formControlName="email"
+            class="w-full"
+          />
+          <label for="email">{{ "students.email" | translate }} *</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="phone"
+            type="text"
+            pInputText
+            formControlName="phone"
+            class="w-full"
+          />
+          <label for="phone">{{ "students.phone" | translate }} *</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <p-datepicker
+            inputId="dateOfBirth"
+            formControlName="dateOfBirth"
+            [showIcon]="true"
+            appendTo="body"
+            iconDisplay="input"
+            dateFormat="mm/dd/yy"
+            styleClass="w-full"
+          />
+          <label for="dateOfBirth"
+            >{{ "students.dateOfBirth" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <p-datepicker
+            inputId="enrollmentDate"
+            formControlName="enrollmentDate"
+            [showIcon]="true"
+            appendTo="body"
+            iconDisplay="input"
+            dateFormat="mm/dd/yy"
+            styleClass="w-full"
+          />
+          <label for="enrollmentDate"
+            >{{ "students.enrollmentDate" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+      <div class="col-12">
+        <p-floatlabel variant="on">
+          <p-select
+            inputId="status"
+            formControlName="status"
+            appendTo="body"
+            [options]="statusOptions()"
+            optionLabel="label"
+            optionValue="value"
+            styleClass="w-full"
+          />
+          <label for="status">{{ "students.status" | translate }} *</label>
+        </p-floatlabel>
+      </div>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      [label]="'common.cancel' | translate"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="cancelDialog()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      [label]="'common.save' | translate"
+      icon="pi pi-check"
+      (click)="saveStudent()"
+      [disabled]="studentForm.invalid"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+<!-- Edit Student Dialog -->
+<p-dialog
+  [visible]="showEditDialog()"
+  [modal]="true"
+  [style]="{ width: '50rem' }"
+  [header]="'students.editStudent' | translate"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="true"
+  [closeOnEscape]="true"
+  (visibleChange)="showEditDialog.set($event)"
+>
+  <form [formGroup]="studentForm" (ngSubmit)="$event.preventDefault()">
+    <div class="grid">
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="editFirstName"
+            type="text"
+            pInputText
+            formControlName="firstName"
+            class="w-full"
+          />
+          <label for="editFirstName"
+            >{{ "students.firstName" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="editLastName"
+            type="text"
+            pInputText
+            formControlName="lastName"
+            class="w-full"
+          />
+          <label for="editLastName"
+            >{{ "students.lastName" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="editEmail"
+            type="email"
+            pInputText
+            formControlName="email"
+            class="w-full"
+          />
+          <label for="editEmail">{{ "students.email" | translate }} *</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="editPhone"
+            type="text"
+            pInputText
+            formControlName="phone"
+            class="w-full"
+          />
+          <label for="editPhone">{{ "students.phone" | translate }} *</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <p-datepicker
+            inputId="editDateOfBirth"
+            formControlName="dateOfBirth"
+            [showIcon]="true"
+            iconDisplay="input"
+            dateFormat="mm/dd/yy"
+            styleClass="w-full"
+          />
+          <label for="editDateOfBirth"
+            >{{ "students.dateOfBirth" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <p-datepicker
+            inputId="editEnrollmentDate"
+            formControlName="enrollmentDate"
+            [showIcon]="true"
+            iconDisplay="input"
+            dateFormat="mm/dd/yy"
+            styleClass="w-full"
+          />
+          <label for="editEnrollmentDate"
+            >{{ "students.enrollmentDate" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <p-select
+            inputId="editStatus"
+            formControlName="status"
+            [options]="statusOptions()"
+            optionLabel="label"
+            optionValue="value"
+            styleClass="w-full"
+          />
+          <label for="editStatus">{{ "students.status" | translate }} *</label>
+        </p-floatlabel>
+      </div>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      [label]="'common.cancel' | translate"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="cancelDialog()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      [label]="'common.update' | translate"
+      icon="pi pi-check"
+      (click)="updateStudent()"
+      [disabled]="studentForm.invalid"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+<!-- View Student Dialog -->
+<p-dialog
+  [visible]="showViewDialog()"
+  [modal]="true"
+  [style]="{ width: '30rem' }"
+  [header]="'students.viewStudent' | translate"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="true"
+  [closeOnEscape]="true"
+  (visibleChange)="showViewDialog.set($event)"
+>
+  @if (selectedStudent()) {
+    <div class="view-dialog-content">
+      <!-- Personal Information -->
+      <div class="view-field">
+        <span class="view-label">{{ "students.firstName" | translate }}:</span>
+        <span class="view-value">{{ selectedStudent()!.firstName }}</span>
+      </div>
+      <hr style="opacity: 0.25" />
+
+      <div class="view-field">
+        <span class="view-label">{{ "students.lastName" | translate }}:</span>
+        <span class="view-value">{{ selectedStudent()!.lastName }}</span>
+      </div>
+      <hr style="opacity: 0.25" />
+
+      <div class="view-field">
+        <span class="view-label">{{ "students.email" | translate }}:</span>
+        <span class="view-value">{{ selectedStudent()!.email }}</span>
+      </div>
+      <hr style="opacity: 0.25" />
+
+      <div class="view-field">
+        <span class="view-label">{{ "students.phone" | translate }}:</span>
+        <span class="view-value">{{ selectedStudent()!.phone }}</span>
+      </div>
+      <hr style="opacity: 0.25" />
+
+      <!-- Dates  -->
+      <div class="view-field">
+        <span class="view-label"
+          >{{ "students.dateOfBirth" | translate }}:</span
+        >
+        <span class="view-value">{{
+          selectedStudent()!.dateOfBirth | date: "mediumDate"
+        }}</span>
+      </div>
+      <hr style="opacity: 0.25" />
+
+      <div class="view-field">
+        <span class="view-label"
+          >{{ "students.enrollmentDate" | translate }}:</span
+        >
+        <span class="view-value">{{
+          selectedStudent()!.enrollmentDate | date: "mediumDate"
+        }}</span>
+      </div>
+
+      <hr style="opacity: 0.25" />
+      <!-- Status - Card Style -->
+      <div class="view-field">
+        <span class="view-label">{{ "students.status" | translate }}:</span>
+        <div class="view-value">
+          <p-tag
+            [value]="selectedStudent()!.status"
+            [severity]="getStatusSeverity(selectedStudent()!.status)"
+            styleClass=""
+          />
+        </div>
+      </div>
+    </div>
+  }
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      [label]="'common.close' | translate"
+      icon="pi pi-times"
+      (click)="cancelDialog()"
+    ></button>
+  </ng-template>
+</p-dialog>

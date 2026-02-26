@@ -1,0 +1,509 @@
+<app-page-header [title]="'instructors.list'" />
+
+<div class="card">
+  <div class="table-header">
+    <p-iconfield iconPosition="left">
+      <p-inputicon styleClass="pi pi-search" />
+      <input
+        pInputText
+        type="text"
+        [placeholder]="'common.search' | translate"
+        (input)="onSearch($event)"
+        class="search-input"
+      />
+    </p-iconfield>
+    @if (authStore.canCreate()) {
+      <button
+        pButton
+        type="button"
+        [label]="'instructors.add' | translate"
+        icon="pi pi-plus"
+        size="small"
+        (click)="onAddInstructor()"
+      ></button>
+    }
+  </div>
+
+  @if (filteredInstructors().length > 0) {
+    <p-table
+      [value]="filteredInstructors()"
+      dataKey="id"
+      [loading]="store.isLoading()"
+      [paginator]="true"
+      [rows]="10"
+      [pageLinks]="5"
+      [showPageLinks]="true"
+      [alwaysShowPaginator]="false"
+      [resetPageOnSort]="false"
+      styleClass="p-datatable-striped"
+      [tableStyle]="{ 'min-width': '70rem', overflow: 'hidden' }"
+      [rowHover]="true"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="lastName">
+            {{ "instructors.name" | translate }}
+            <p-sortIcon field="lastName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="email">
+            {{ "instructors.email" | translate }}
+            <p-sortIcon field="email"></p-sortIcon>
+          </th>
+          <th>{{ "instructors.phone" | translate }}</th>
+          <th>{{ "instructors.specialization" | translate }}</th>
+          <th pSortableColumn="rating">
+            {{ "instructors.rating" | translate }}
+            <p-sortIcon field="rating"></p-sortIcon>
+          </th>
+          <th>{{ "instructors.courses" | translate }}</th>
+          <th>{{ "common.actions" | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-instructor>
+        <tr>
+          <td>
+            <strong>{{ getFullName(instructor) }}</strong>
+          </td>
+          <td>{{ instructor.email }}</td>
+          <td>{{ instructor.phone }}</td>
+          <td>
+            <p-chip
+              [label]="instructor.specialization || '-'"
+              styleClass="specialization-chip"
+            ></p-chip>
+          </td>
+          <td>
+            <span class="rating-display">
+              <i class="pi pi-star-fill" style="color: #f59e0b"></i>
+              {{ instructor.rating }}
+            </span>
+          </td>
+          <td>
+            <p-tag
+              [value]="instructor.coursesCount"
+              icon="pi pi-book"
+              [severity]="instructor.coursesCount > 0 ? 'success' : 'secondary'"
+            ></p-tag>
+          </td>
+          <td>
+            <div style="display: flex; gap: 0.5rem; align-items: center">
+              <p-button
+                icon="pi pi-eye"
+                [rounded]="true"
+                [text]="true"
+                (click)="onViewInstructor(instructor)"
+                severity="secondary"
+                size="small"
+                [pTooltip]="'common.view' | translate"
+              />
+              @if (authStore.canEdit()) {
+                <p-button
+                  icon="pi pi-pencil"
+                  [rounded]="true"
+                  [text]="true"
+                  (click)="onEditInstructor(instructor)"
+                  severity="secondary"
+                  size="small"
+                  [pTooltip]="'common.edit' | translate"
+                />
+              }
+              @if (authStore.canDelete()) {
+                <p-button
+                  icon="pi pi-trash"
+                  [rounded]="true"
+                  [text]="true"
+                  (click)="onDeleteInstructor(instructor)"
+                  severity="danger"
+                  size="small"
+                  [pTooltip]="'common.delete' | translate"
+                />
+              }
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  } @else {
+    <app-empty-state
+      [message]="'instructors.noInstructors'"
+      [icon]="'pi pi-user'"
+    >
+      @if (authStore.canCreate()) {
+        <button
+          pButton
+          type="button"
+          [label]="'instructors.add' | translate"
+          icon="pi pi-plus"
+          class="p-button-primary"
+          (click)="onAddInstructor()"
+        ></button>
+      }
+    </app-empty-state>
+  }
+</div>
+
+<app-confirmation-dialog
+  [visible]="showDeleteDialog()"
+  [message]="'instructors.confirmDelete'"
+  [severity]="'danger'"
+  (confirm)="confirmDelete()"
+  (cancel)="cancelDelete()"
+></app-confirmation-dialog>
+
+<!-- Add Instructor Dialog -->
+<p-dialog
+  [visible]="showAddDialog()"
+  [modal]="true"
+  [style]="{ width: '50rem' }"
+  [header]="'instructors.addInstructor' | translate"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="true"
+  [closeOnEscape]="true"
+  (visibleChange)="showAddDialog.set($event)"
+>
+  <form [formGroup]="instructorForm" (ngSubmit)="$event.preventDefault()">
+    <div class="grid">
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="firstName"
+            type="text"
+            pInputText
+            formControlName="firstName"
+            class="w-full"
+          />
+          <label for="firstName"
+            >{{ "instructors.firstName" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="lastName"
+            type="text"
+            pInputText
+            formControlName="lastName"
+            class="w-full"
+          />
+          <label for="lastName"
+            >{{ "instructors.lastName" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="email"
+            type="email"
+            pInputText
+            formControlName="email"
+            class="w-full"
+          />
+          <label for="email">{{ "instructors.email" | translate }} *</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="phone"
+            type="text"
+            pInputText
+            formControlName="phone"
+            class="w-full"
+          />
+          <label for="phone">{{ "instructors.phone" | translate }} *</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <p-calendar
+            inputId="hireDate"
+            formControlName="hireDate"
+            appendTo="body"
+            [showIcon]="true"
+            [iconDisplay]="'input'"
+            dateFormat="mm/dd/yy"
+            styleClass="w-full"
+          />
+          <label for="hireDate"
+            >{{ "instructors.hireDate" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <p-select
+            inputId="specialization"
+            formControlName="specialization"
+            appendTo="body"
+            [options]="specializationOptions()"
+            optionLabel="label"
+            optionValue="value"
+            [filter]="true"
+            filterPlaceholder="Search specializations"
+            styleClass="w-full"
+          />
+          <label for="specialization"
+            >{{ "instructors.specialization" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+      <div class="col-12">
+        <p-floatlabel variant="on">
+          <input
+            id="rating"
+            type="number"
+            pInputText
+            formControlName="rating"
+            class="w-full"
+            [min]="0"
+            [max]="5"
+            [step]="0.1"
+          />
+          <label for="rating">{{ "instructors.rating" | translate }} *</label>
+        </p-floatlabel>
+      </div>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      [label]="'common.cancel' | translate"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="cancelDialog()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      [label]="'common.save' | translate"
+      icon="pi pi-check"
+      (click)="saveInstructor()"
+      [disabled]="instructorForm.invalid"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+<!-- Edit Instructor Dialog -->
+<p-dialog
+  [visible]="showEditDialog()"
+  [modal]="true"
+  [style]="{ width: '50rem' }"
+  [header]="'instructors.editInstructor' | translate"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="true"
+  [closeOnEscape]="true"
+  (visibleChange)="showEditDialog.set($event)"
+>
+  <form [formGroup]="instructorForm" (ngSubmit)="$event.preventDefault()">
+    <div class="grid">
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="editFirstName"
+            type="text"
+            pInputText
+            formControlName="firstName"
+            class="w-full"
+          />
+          <label for="editFirstName"
+            >{{ "instructors.firstName" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="editLastName"
+            type="text"
+            pInputText
+            formControlName="lastName"
+            class="w-full"
+          />
+          <label for="editLastName"
+            >{{ "instructors.lastName" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="editEmail"
+            type="email"
+            pInputText
+            formControlName="email"
+            class="w-full"
+          />
+          <label for="editEmail">{{ "instructors.email" | translate }} *</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="editPhone"
+            type="text"
+            pInputText
+            formControlName="phone"
+            class="w-full"
+          />
+          <label for="editPhone">{{ "instructors.phone" | translate }} *</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <p-calendar
+            inputId="editHireDate"
+            appendTo="body"
+            formControlName="hireDate"
+            [showIcon]="true"
+            [iconDisplay]="'input'"
+            dateFormat="mm/dd/yy"
+            styleClass="w-full"
+          />
+          <label for="editHireDate"
+            >{{ "instructors.hireDate" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+      <div class="col-6">
+        <p-floatlabel variant="on">
+          <input
+            id="editRating"
+            type="number"
+            pInputText
+            formControlName="rating"
+            class="w-full"
+            [min]="0"
+            [max]="5"
+            [step]="0.1"
+          />
+          <label for="editRating"
+            >{{ "instructors.rating" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+      <div class="col-12">
+        <p-floatlabel variant="on">
+          <p-select
+            appendTo="body"
+            inputId="editSpecialization"
+            formControlName="specialization"
+            [options]="specializationOptions()"
+            optionLabel="label"
+            optionValue="value"
+            [filter]="true"
+            filterPlaceholder="Search specializations"
+            styleClass="w-full"
+          />
+          <label for="editSpecialization"
+            >{{ "instructors.specialization" | translate }} *</label
+          >
+        </p-floatlabel>
+      </div>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      [label]="'common.cancel' | translate"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="cancelDialog()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      [label]="'common.update' | translate"
+      icon="pi pi-check"
+      (click)="updateInstructor()"
+      [disabled]="instructorForm.invalid"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+<!-- View Instructor Dialog -->
+<p-dialog
+  [visible]="showViewDialog()"
+  [modal]="true"
+  [style]="{ width: '40rem' }"
+  [header]="'instructors.viewInstructor' | translate"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="true"
+  [closeOnEscape]="true"
+  (visibleChange)="showViewDialog.set($event)"
+>
+  @if (selectedInstructor()) {
+    <div class="view-dialog-content">
+      <!-- Instructor Information -->
+      <div class="view-field">
+        <span class="view-label">{{ "instructors.name" | translate }}:</span>
+        <span class="view-value">{{ getFullName(selectedInstructor()!) }}</span>
+      </div>
+      <hr style="opacity: 0.25" />
+
+      <div class="view-field">
+        <span class="view-label">{{ "instructors.email" | translate }}:</span>
+        <span class="view-value">{{ selectedInstructor()!.email }}</span>
+      </div>
+      <hr style="opacity: 0.25" />
+
+      <div class="view-field">
+        <span class="view-label">{{ "instructors.phone" | translate }}:</span>
+        <span class="view-value">{{ selectedInstructor()!.phone }}</span>
+      </div>
+      <hr style="opacity: 0.25" />
+
+      <div class="view-field">
+        <span class="view-label"
+          >{{ "instructors.specialization" | translate }}:</span
+        >
+        <span class="view-value">{{
+          selectedInstructor()!.specialization || "-"
+        }}</span>
+      </div>
+      <hr style="opacity: 0.25" />
+
+      <div class="view-field">
+        <span class="view-label"
+          >{{ "instructors.hireDate" | translate }}:</span
+        >
+        <span class="view-value">{{
+          selectedInstructor()!.hireDate | date: "mediumDate"
+        }}</span>
+      </div>
+      <hr style="opacity: 0.25" />
+
+      <div class="view-field">
+        <span class="view-label">{{ "instructors.rating" | translate }}:</span>
+        <span class="view-value">
+          <i class="pi pi-star-fill" style="color: #f59e0b"></i>
+          {{ selectedInstructor()!.rating }}
+        </span>
+      </div>
+      <hr style="opacity: 0.25" />
+
+      <div class="view-field">
+        <span class="view-label">{{ "instructors.courses" | translate }}:</span>
+        <span class="view-value">{{ selectedInstructor()!.coursesCount }}</span>
+      </div>
+    </div>
+  }
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      [label]="'common.close' | translate"
+      icon="pi pi-times"
+      (click)="cancelDialog()"
+    ></button>
+  </ng-template>
+</p-dialog>

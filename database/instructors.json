@@ -1,0 +1,103 @@
+{
+  "instructors": [
+    {
+      "id": 1,
+      "name": "Dr. Sarah Johnson",
+      "email": "sarah.johnson@university.edu",
+      "phone": "+1-555-0101",
+      "specialization": "Computer Science",
+      "rating": 4.8,
+      "coursesCount": 3
+    },
+    {
+      "id": 2,
+      "name": "Prof. Michael Chen",
+      "email": "michael.chen12@university.edu",
+      "phone": "+1-555-0102",
+      "specialization": "Mathematics",
+      "rating": 4.9,
+      "coursesCount": 4
+    },
+    {
+      "id": 3,
+      "name": "Dr. Emily Davis",
+      "email": "emily.davis@university.edu",
+      "phone": "+1-555-0103",
+      "specialization": "Physics",
+      "rating": 4.7,
+      "coursesCount": 2
+    },
+    {
+      "id": 4,
+      "name": "Prof. James Wilson",
+      "email": "james.wilson@university.edu",
+      "phone": "+1-555-0104",
+      "specialization": "Chemistry",
+      "rating": 4.6,
+      "coursesCount": 3
+    },
+    {
+      "id": 5,
+      "name": "Dr. Linda Martinez",
+      "email": "linda.martinez@university.edu",
+      "phone": "+1-555-0105",
+      "specialization": "Biology",
+      "rating": 4.8,
+      "coursesCount": 3
+    },
+    {
+      "id": 6,
+      "name": "Prof. Robert Taylor",
+      "email": "robert.taylor@university.edu",
+      "phone": "+1-555-0106",
+      "specialization": "English Literature",
+      "rating": 4.5,
+      "coursesCount": 2
+    },
+    {
+      "id": 7,
+      "name": "Dr. Patricia Anderson",
+      "email": "patricia.anderson@university.edu",
+      "phone": "+1-555-0107",
+      "specialization": "History",
+      "rating": 4.7,
+      "coursesCount": 2
+    },
+    {
+      "id": 8,
+      "name": "Prof. David Thomas",
+      "email": "david.thomas@university.edu",
+      "phone": "+1-555-0108",
+      "specialization": "Economics",
+      "rating": 4.6,
+      "coursesCount": 3
+    },
+    {
+      "id": 9,
+      "name": "Dr. Jennifer Garcia",
+      "email": "jennifer.garcia@university.edu",
+      "phone": "+1-555-0109",
+      "specialization": "Business Studies",
+      "rating": 4.8,
+      "coursesCount": 2
+    },
+    {
+      "id": 10,
+      "name": "Prof. Christopher Lee",
+      "email": "christopher.lee@university.edu",
+      "phone": "+1-555-0110",
+      "specialization": "Art & Design",
+      "rating": 4.5,
+      "coursesCount": 2
+    },
+    {
+      "name": "Test Teacher",
+      "email": "test@example.com",
+      "phone": "+1-555-1234",
+      "specialization": "Testing",
+      "rating": 4.5,
+      "coursesCount": 0,
+      "id": 11
+    }
+  ]
+}

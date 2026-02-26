@@ -1,0 +1,58 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "Ahmed Ali",
+      "email": "ahmed.ali@mail.com",
+      "phone": "01000000001",
+      "status": "active",
+      "createdAt": "2026-02-01",
+      "courseIds": [1, 2]
+    },
+    {
+      "id": 2,
+      "name": "Sara Mohamed",
+      "email": "sara@mail.com",
+      "phone": "01000000002",
+      "status": "inactive",
+      "createdAt": "2026-02-10",
+      "courseIds": [2]
+    }
+  ],
+
+  "instructors": [
+    {
+      "id": 1,
+      "name": "Mohamed Hassan",
+      "specialization": "Frontend",
+      "rating": 4.8,
+      "coursesCount": 1
+    },
+    {
+      "id": 2,
+      "name": "Mona Samy",
+      "specialization": "UI/UX",
+      "rating": 4.6,
+      "coursesCount": 1
+    }
+  ],
+
+  "courses": [
+    {
+      "id": 1,
+      "title": "Angular Basics",
+      "instructorId": 1,
+      "studentsCount": 1,
+      "scheduleDate": "2026-03-01",
+      "scheduleTime": "18:00"
+    },
+    {
+      "id": 2,
+      "title": "UI/UX Fundamentals",
+      "instructorId": 2,
+      "studentsCount": 2,
+      "scheduleDate": "2026-03-05",
+      "scheduleTime": "17:00"
+    }
+  ]
+}

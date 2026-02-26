@@ -1,0 +1,39 @@
+<app-page-header
+  [title]="'dashboard.title'"
+  [subtitle]="'dashboard.welcomeMessage'"
+></app-page-header>
+
+<div class="stats-grid">
+  @for (stat of stats(); track stat.title) {
+    <p-card class="stat-card">
+      <div class="stat-content">
+        <div class="stat-icon" [style.background-color]="stat.color">
+          <i [class]="stat.icon"></i>
+        </div>
+        <div class="stat-info">
+          <h3 class="stat-title">{{ stat.title | translate }}</h3>
+          <p class="stat-value">{{ stat.value }}</p>
+        </div>
+      </div>
+    </p-card>
+  }
+</div>
+
+<div class="charts-section">
+  <p-card>
+    <h3 class="chart-title">{{ 'dashboard.enrollmentTrends' | translate }}</h3>
+    <div class="chart-wrapper">
+      <app-line-chart
+        [data]="enrollmentTrends()"
+        [height]="'350px'"
+      />
+    </div>
+  </p-card>
+</div>
+
+<div class="welcome-card">
+  <p-card>
+    <h2>{{ 'dashboard.welcomeMessage' | translate }}</h2>
+    <p>This is a demo enterprise Angular 19 application with PrimeNG, NgRx Signals, and full i18n support.</p>
+  </p-card>
+</div>

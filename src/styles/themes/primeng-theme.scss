@@ -1,0 +1,130 @@
+// PrimeNG Theme Customizations
+@import "../variables";
+
+// Override PrimeNG CSS variables
+:root {
+  --primary-color: #{$primary-color};
+  --primary-color-text: #ffffff;
+  --surface-0: #{$surface-color};
+  --surface-50: #{$background-color};
+  --surface-100: #f1f5f9;
+  --surface-200: #e2e8f0;
+  --surface-300: #cbd5e1;
+  --surface-400: #94a3b8;
+  --surface-500: #64748b;
+  --surface-600: #475569;
+  --surface-700: #334155;
+  --surface-800: #1e293b;
+  --surface-900: #0f172a;
+  --text-color: #{$text-color};
+  --text-color-secondary: #{$text-secondary-color};
+  --border-radius: #{$border-radius-md};
+  --focus-ring: 0 0 0 3px rgba(139, 92, 246, 0.2);
+
+  // Override invalid state colors - use neutral border until touched
+  --p-form-field-invalid-border-color: #cbd5e1; // same as surface-300
+}
+
+// Global PrimeNG component adjustments
+.p-component {
+  font-family: $font-family;
+}
+
+// Button customizations
+.p-button {
+  border-radius: $border-radius-md;
+  font-weight: 500;
+  padding: 0.625rem 1rem;
+
+  &.p-button-sm {
+    padding: 0.5rem 0.75rem;
+    font-size: $font-size-sm;
+  }
+
+  &.p-button-lg {
+    padding: 0.75rem 1.25rem;
+    font-size: $font-size-lg;
+  }
+}
+
+// Card customizations
+.p-card {
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+
+  .p-card-body {
+    padding: $spacing-lg;
+  }
+}
+
+// Table customizations
+.p-datatable {
+  .p-datatable-header {
+    background: $surface-color;
+    border: 1px solid $border-color;
+    padding: $spacing-md;
+  }
+
+  .p-datatable-thead > tr > th {
+    background: $background-color;
+    color: $text-color;
+    font-weight: 600;
+    padding: $spacing-md;
+  }
+
+  .p-datatable-tbody > tr > td {
+    padding: $spacing-md;
+  }
+
+  .p-datatable-tbody > tr:hover {
+    background: $background-color;
+  }
+}
+
+// Dialog customizations
+.p-dialog {
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-xl;
+
+  .p-dialog-header {
+    padding: $spacing-lg;
+    border-bottom: 1px solid $border-color;
+  }
+
+  .p-dialog-content {
+    padding: $spacing-lg;
+  }
+
+  .p-dialog-footer {
+    padding: $spacing-lg;
+    border-top: 1px solid $border-color;
+  }
+}
+
+// Toast customizations
+.p-toast {
+  .p-toast-message {
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-lg;
+
+    &.p-toast-message-success {
+      background: $success-color;
+      border-color: $success-color;
+    }
+
+    &.p-toast-message-error {
+      background: $danger-color;
+      border-color: $danger-color;
+    }
+
+    &.p-toast-message-warn {
+      background: $warning-color;
+      border-color: $warning-color;
+    }
+
+    &.p-toast-message-info {
+      background: $info-color;
+      border-color: $info-color;
+    }
+  }
+}

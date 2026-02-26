@@ -1,0 +1,25 @@
+@import "../../../../../styles/variables";
+@import "../../../../../styles/mixins";
+
+.table-header {
+  margin-bottom: $spacing-lg;
+  @include flex-between();
+
+  .search-input {
+    width: 300px;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: $spacing-xs;
+}
+
+.enrollment-info {
+  min-width: 120px;
+
+  .enrollment-text {
+    font-size: $font-size-sm;
+    color: $text-secondary-color;
+  }
+}

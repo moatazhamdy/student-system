@@ -1,0 +1,19 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.footer {
+  background: $surface-color;
+  border-top: 1px solid $border-color;
+  padding: $spacing-lg;
+  margin-top: auto;
+
+  .footer-content {
+    @include flex-center();
+
+    .copyright {
+      color: $text-secondary-color;
+      font-size: $font-size-sm;
+      margin: 0;
+    }
+  }
+}

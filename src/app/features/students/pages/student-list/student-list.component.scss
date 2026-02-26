@@ -1,0 +1,53 @@
+@import '../../../../../styles/variables';
+@import '../../../../../styles/mixins';
+
+.table-header {
+  margin-bottom: $spacing-lg;
+  @include flex-between();
+
+  .search-input {
+    width: 300px;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: $spacing-xs;
+}
+
+// Enhanced table-specific styles
+:host ::ng-deep {
+  .p-datatable {
+    .p-datatable-tbody > tr > td {
+      vertical-align: middle;
+    }
+
+    // Status tag styling
+    .p-tag {
+      font-weight: 600;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    // Action buttons in table
+    .action-buttons {
+      justify-content: center;
+
+      .p-button {
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+
+  // Pagination enhancement
+  .p-paginator {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border: none;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+}

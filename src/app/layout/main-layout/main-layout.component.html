@@ -1,0 +1,10 @@
+<div class="layout-wrapper" [class.sidebar-collapsed]="sidebarCollapsed()" [class.rtl]="isRTL()">
+  <app-topbar (toggleSidebar)="onToggleSidebar()" />
+  <app-sidebar [collapsed]="sidebarCollapsed()" />
+  <main class="main-content">
+    <div class="content-wrapper">
+      <router-outlet />
+    </div>
+    <app-footer />
+  </main>
+</div>

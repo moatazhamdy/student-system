@@ -1,0 +1,54 @@
+<header class="topbar">
+  <div class="topbar-left">
+    <button
+      pButton
+      type="button"
+      icon="pi pi-bars"
+      class="p-button-text toggle-btn"
+      (click)="onToggleSidebar()"
+    ></button>
+  </div>
+
+  <div class="topbar-right">
+    <div class="user-info">
+      <span class="user-name">{{ authStore.userFullName() }}</span>
+      <span class="user-role">{{ authStore.user()?.role }}</span>
+    </div>
+
+    <button
+      pButton
+      type="button"
+      icon="pi pi-user"
+      class="p-button-text p-button-rounded user-btn"
+      (click)="menu.toggle($event)"
+    ></button>
+
+    <p-menu #menu [model]="userMenuItems" [popup]="true"></p-menu>
+  </div>
+</header>
+
+<!-- Logout Confirmation Dialog -->
+<p-dialog
+  [header]="'auth.confirmLogout' | translate"
+  [(visible)]="showLogoutDialog"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '450px' }"
+>
+  <p>{{ 'auth.logoutMessage' | translate }}</p>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      [label]="'common.cancel' | translate"
+      icon="pi pi-times"
+      (onClick)="cancelLogout()"
+      severity="secondary"
+    />
+    <p-button
+      [label]="'auth.logout' | translate"
+      icon="pi pi-sign-out"
+      (onClick)="confirmLogout()"
+      severity="danger"
+    />
+  </ng-template>
+</p-dialog>

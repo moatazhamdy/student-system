@@ -1,0 +1,42 @@
+<aside class="sidebar" [class.collapsed]="collapsed()">
+  <div class="sidebar-header">
+    @if (!collapsed()) {
+      <h2 class="logo-text">Student System</h2>
+    } @else {
+      <span class="logo-icon">SS</span>
+    }
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul class="menu-list">
+      @for (item of menuItems; track item.route) {
+        <li class="menu-item">
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            class="menu-link"
+            [title]="item.translationKey | translate"
+          >
+            <i [class]="item.icon" class="menu-icon"></i>
+            @if (!collapsed()) {
+              <span class="menu-label">{{ item.translationKey | translate }}</span>
+            }
+          </a>
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button
+      pButton
+      type="button"
+      [icon]="currentLanguage() === 'en' ? 'pi pi-globe' : 'pi pi-globe'"
+      [label]="!collapsed() ? (currentLanguage() === 'en' ? 'عربي' : 'English') : ''"
+      class="p-button-text language-btn"
+      (click)="toggleLanguage()"
+      [pTooltip]="currentLanguage() === 'en' ? 'عربي' : 'English'"
+      tooltipPosition="right"
+    ></button>
+  </div>
+</aside>

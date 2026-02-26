@@ -1,0 +1,48 @@
+<p-dialog
+  [visible]="visible()"
+  [header]="header() | translate"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="confirmation-dialog"
+  (onHide)="onCancel()"
+>
+  <div class="dialog-content">
+    <i
+      [class]="
+        severity() === 'danger'
+          ? 'pi pi-exclamation-triangle danger-icon'
+          : severity() === 'warning'
+            ? 'pi pi-exclamation-circle warning-icon'
+            : 'pi pi-info-circle info-icon'
+      "
+    ></i>
+    <p class="message">{{ message() | translate }}</p>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      [label]="cancelLabel() | translate"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="onCancel()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      [label]="confirmLabel() | translate"
+      icon="pi pi-check"
+      [class]="
+        severity() === 'danger'
+          ? 'p-button-danger'
+          : severity() === 'warning'
+            ? 'p-button-warning'
+            : 'p-button-success'
+      "
+      (click)="onConfirm()"
+    ></button>
+  </ng-template>
+</p-dialog>

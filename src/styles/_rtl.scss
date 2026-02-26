@@ -1,0 +1,139 @@
+// RTL-specific styles
+[dir='rtl'] {
+  // Cairo font for Arabic
+  font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  // Apply Cairo font to all elements except icons
+  *:not([class*="pi-"]):not(.pi):not(i[class*="icon"]):not(.material-icons):not(.fa):not([class*="fa-"]) {
+    font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+  }
+
+  // Text alignment
+  text-align: right;
+
+  // Margin and padding adjustments
+  .ml-auto {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+  }
+
+  .mr-auto {
+    margin-right: 0 !important;
+    margin-left: auto !important;
+  }
+
+  // Float adjustments
+  .float-left {
+    float: right !important;
+  }
+
+  .float-right {
+    float: left !important;
+  }
+
+  // Border radius
+  .border-radius-left {
+    border-top-right-radius: $border-radius-md;
+    border-bottom-right-radius: $border-radius-md;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .border-radius-right {
+    border-top-left-radius: $border-radius-md;
+    border-bottom-left-radius: $border-radius-md;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  // Icon adjustments
+  .icon-before {
+    margin-left: $spacing-sm;
+    margin-right: 0;
+  }
+
+  .icon-after {
+    margin-right: $spacing-sm;
+    margin-left: 0;
+  }
+
+  // Ensure Cairo font in all PrimeNG dialogs and overlays
+  .p-dialog,
+  .p-dialog-content,
+  .p-dialog-header,
+  .p-dialog-footer,
+  .p-overlay,
+  .p-component,
+  .p-dropdown-panel,
+  .p-multiselect-panel,
+  .p-calendar-overlay {
+    font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+  }
+
+  // PrimeNG specific RTL fixes
+  .p-sidebar-left {
+    right: 0;
+    left: auto;
+  }
+
+  .p-sidebar-right {
+    left: 0;
+    right: auto;
+  }
+
+  .p-toast-top-right {
+    right: auto;
+    left: 20px;
+  }
+
+  .p-toast-top-left {
+    left: auto;
+    right: 20px;
+  }
+
+  .p-breadcrumb {
+    .p-menuitem-separator {
+      transform: rotate(180deg);
+    }
+  }
+
+  // Table adjustments
+  .p-datatable {
+    .p-sortable-column-icon {
+      margin-left: 0;
+      margin-right: 0.5rem;
+    }
+  }
+
+  // Select adjustments
+  .p-select {
+    .p-select-dropdown {
+      right: auto;
+      left: 0;
+    }
+  }
+
+  // Input group
+  .p-inputgroup {
+    > .p-component:not(:last-child) {
+      border-top-right-radius: $border-radius-md;
+      border-bottom-right-radius: $border-radius-md;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    > .p-component:not(:first-child) {
+      border-top-left-radius: $border-radius-md;
+      border-bottom-left-radius: $border-radius-md;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  // Checkbox and radio
+  .p-checkbox,
+  .p-radiobutton {
+    margin-left: $spacing-sm;
+    margin-right: 0;
+  }
+}

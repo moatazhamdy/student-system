@@ -1,0 +1,128 @@
+// Form Dialog Styles (Add/Edit)
+
+// Dialog content wrapper
+.p-dialog .p-dialog-content {
+  padding: 2rem !important;
+  background: var(--surface-0);
+}
+.p-floatlabel label {
+  font-size: 0.825rem;
+}
+
+// Form styling
+.p-dialog form {
+  // FloatLabel fixes for variant="on"
+
+  // Text Input (pInputText)
+  input[pInputText] {
+    &.ng-invalid.ng-touched,
+    &.p-invalid.ng-touched {
+      border-color: #ef4444 !important;
+    }
+
+    &.ng-invalid.ng-touched:focus,
+    &.p-invalid.ng-touched:focus {
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+    }
+  }
+
+  // Textarea
+  textarea[pInputTextarea] {
+    &.ng-invalid.ng-touched,
+    &.p-invalid.ng-touched {
+      border-color: #ef4444 !important;
+    }
+
+    &.ng-invalid.ng-touched:focus,
+    &.p-invalid.ng-touched:focus {
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+    }
+  }
+
+  // DatePicker
+  p-datepicker {
+    &.ng-invalid.ng-touched,
+    &.p-invalid.ng-touched {
+      input {
+        border-color: #ef4444 !important;
+      }
+    }
+
+    &.ng-invalid.ng-touched input:focus,
+    &.p-invalid.ng-touched input:focus {
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+    }
+  }
+
+  // Select/Dropdown
+  p-select {
+    &.ng-invalid.ng-touched,
+    &.p-invalid.ng-touched.p-select {
+      border-color: #ef4444 !important;
+    }
+  }
+
+  // MultiSelect
+  p-multiselect {
+    &.ng-invalid.ng-touched,
+    &.p-invalid.ng-touched.p-multiselect {
+      border-color: #ef4444 !important;
+    }
+  }
+
+  // Section headers
+  h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--surface-200);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  // Grid gaps
+  .col-12,
+  .col-6,
+  .col-4 {
+    padding: 0.75rem !important;
+  }
+}
+
+.p-dialog {
+  // Float Label validation styling
+  .p-floatlabel {
+    // Keep normal color for pristine/untouched invalid fields
+    &:has(.ng-invalid.ng-pristine) label,
+    &:has(.ng-invalid.ng-untouched) label,
+    &:has(.ng-invalid:not(.ng-touched)) label,
+    &:has(.p-invalid.ng-pristine) label,
+    &:has(.p-invalid.ng-untouched) label,
+    &:has(.p-invalid:not(.ng-touched)) label {
+      color: var(--text-color) !important;
+    }
+
+    // Red label for ALL input types when touched and invalid
+    &:has(input.ng-invalid.ng-touched) label,
+    &:has(input.p-invalid.ng-touched) label,
+    &:has(textarea.ng-invalid.ng-touched) label,
+    &:has(textarea.p-invalid.ng-touched) label,
+    &:has(p-datepicker.ng-invalid.ng-touched) label,
+    &:has(p-datepicker.p-invalid.ng-touched) label,
+    &:has(p-select.ng-invalid.ng-touched) label,
+    &:has(p-select.p-invalid.ng-touched) label,
+    &:has(p-multiselect.ng-invalid.ng-touched) label,
+    &:has(p-multiselect.p-invalid.ng-touched) label,
+    &:has(p-autocomplete.ng-invalid.ng-touched) label,
+    &:has(p-autocomplete.p-invalid.ng-touched) label,
+    &:has(p-inputnumber.ng-invalid.ng-touched) label,
+    &:has(p-inputnumber.p-invalid.ng-touched) label {
+      color: #ef4444 !important;
+    }
+  }
+}

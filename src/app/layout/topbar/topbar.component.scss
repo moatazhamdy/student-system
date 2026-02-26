@@ -1,0 +1,53 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $header-height;
+  background: $surface-color;
+  border-bottom: 1px solid $border-color;
+  @include flex-between();
+  padding: 0 $spacing-lg;
+  z-index: 101;
+
+  .topbar-left {
+    @include flex-start();
+    gap: $spacing-md;
+
+    .toggle-btn {
+      font-size: $font-size-xl;
+    }
+  }
+
+  .topbar-right {
+    @include flex-start();
+    gap: $spacing-md;
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.125rem;
+
+      .user-name {
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: var(--text-color);
+      }
+
+      .user-role {
+        font-size: 0.75rem;
+        color: var(--text-color-secondary);
+        text-transform: capitalize;
+      }
+    }
+
+    .notification-btn,
+    .user-btn {
+      font-size: $font-size-lg;
+    }
+  }
+}

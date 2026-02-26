@@ -1,0 +1,41 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/mixins';
+
+.page-header {
+  margin-bottom: $spacing-xl;
+
+  .header-content {
+    @include flex-between();
+    gap: $spacing-md;
+    flex-wrap: wrap;
+
+    .header-text {
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+
+      .back-btn {
+        font-size: $font-size-xl;
+      }
+
+      .title {
+        font-size: $font-size-3xl;
+        font-weight: 700;
+        color: $text-color;
+        margin: 0;
+      }
+
+      .subtitle {
+        font-size: $font-size-base;
+        color: $text-secondary-color;
+        margin: $spacing-xs 0 0 0;
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      gap: $spacing-sm;
+      flex-wrap: wrap;
+    }
+  }
+}
