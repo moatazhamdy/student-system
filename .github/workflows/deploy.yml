@@ -34,6 +34,15 @@ jobs:
       - name: Build Angular app
         run: npm run build -- --configuration production
 
+      - name: List build output
+        run: |
+          echo "Listing dist directory:"
+          ls -la dist/
+          echo "Listing dist/student-system:"
+          ls -la dist/student-system/
+          echo "Listing dist/student-system/browser:"
+          ls -la dist/student-system/browser/
+
       - name: Copy index.html to 404.html
         run: cp dist/student-system/browser/index.html dist/student-system/browser/404.html
 
