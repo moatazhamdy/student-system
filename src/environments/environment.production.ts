@@ -3,7 +3,9 @@ import { Environment } from './environment.model';
 export const environment: Environment = {
   production: true,
   environmentName: 'production',
-  apiUrl: 'https://api.student-system.com/api',
+  // Replace with your Render backend URL after deployment
+  // Example: 'https://student-system-api.onrender.com/api'
+  apiUrl: 'https://student-system-api.onrender.com/api',
   apiVersion: 'v1',
   enableLogging: false,
   logLevel: 'error',
