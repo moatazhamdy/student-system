@@ -3,7 +3,7 @@ services:
     name: student-system-api
     runtime: node
     env: node
-    buildCommand: npm install
+    buildCommand: npm install --legacy-peer-deps
     startCommand: node server.js
     envVars:
       - key: NODE_ENV
