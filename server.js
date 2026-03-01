@@ -8,8 +8,21 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
+// CORS configuration
+const corsOptions = {
+  origin: [
+    'http://localhost:4200',
+    'http://localhost:3000',
+    'https://moatazhamdy.github.io'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // File paths - OUTSIDE src folder to avoid Angular hot reload
